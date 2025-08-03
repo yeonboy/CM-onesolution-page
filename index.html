@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>환경 자가측정 원솔루션 | 청명기연환경</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* 기본 폰트 및 커스텀 스타일 정의 */
+        body {
+            font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
+            background-color: #F9FAFB;
+            /* bg-gray-50 */
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 호버 시 부드러운 전환 효과 */
+        .hover-lift {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        /* --- 스크롤 애니메이션 --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- 텍스트 하이라이트 효과 --- */
+        .highlight {
+            position: relative;
+            display: inline-block;
+        }
+
+        .highlight::after {
+            content: '';
+            position: absolute;
+            left: -0.2em;
+            right: -0.2em;
+            bottom: 0.1em;
+            height: 0.4em;
+            z-index: -1;
+            opacity: 0.3;
+            transform: rotate(-2deg) skewX(-4deg);
+            border-radius: 4px;
+            background-color: #60a5fa;
+            /* blue-400 */
+        }
+
+        /* --- Hero 섹션 텍스트 애니메이션 --- */
+        .hero-text-animation {
+            animation: text-focus-in 1.2s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+        }
+
+        @keyframes text-focus-in {
+            0% {
+                filter: blur(12px);
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            100% {
+                filter: blur(0px);
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* --- 스크롤 다운 아이콘 애니메이션 --- */
+        .scroll-down-animation {
+            animation: gentle-bounce 2.5s infinite;
+        }
+
+        @keyframes gentle-bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: translateY(10px);
+                opacity: 1;
+            }
+        }
+
+        /* --- 네비게이션 CTA 버튼 스타일 --- */
+        .btn-custom {
+            background-color: rgb(0, 68, 170);
+            transition: background-color 0.3s;
+        }
+
+        .btn-custom:hover {
+            background-color: rgb(0, 51, 128);
+        }
+
+
+        /* --- Spectrum Infographic Styles --- */
+        .spectrum-container {
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .spectrum-container.is-visible {
+            opacity: 1;
+        }
+
+        .spectrum-line {
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6, #93c5fd);
+        }
+
+        .spectrum-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .spectrum-container.is-visible .spectrum-item:nth-child(1) {
+            transition-delay: 0.2s;
+        }
+
+        .spectrum-container.is-visible .spectrum-item:nth-child(2) {
+            transition-delay: 0.4s;
+        }
+
+        .spectrum-container.is-visible .spectrum-item:nth-child(3) {
+            transition-delay: 0.6s;
+        }
+
+        .spectrum-container.is-visible .spectrum-item:nth-child(4) {
+            transition-delay: 0.8s;
+        }
+
+        .spectrum-container.is-visible .spectrum-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dark-navy-icon {
+            background-color: #1e3a8a;
+            -webkit-mask-image: url(https://i.imgur.com/Ne6eTf0.png);
+            mask-image: url(https://i.imgur.com/Ne6eTf0.png);
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
+        }
+
+        /* --- Auto Slider --- */
+        .slider {
+            width: 100%;
+            height: var(--height);
+            overflow: hidden;
+            mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+        }
+
+        .slider .list {
+            display: flex;
+            width: 100%;
+            min-width: calc(var(--width) * var(--quantity));
+            position: relative;
+        }
+
+        .slider .list .item {
+            position: absolute;
+            left: 0;
+            width: var(--width);
+            height: var(--height);
+            animation: autoRun 25s linear infinite;
+            transition: filter 0.5s;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 0 10px;
+            will-change: transform;
+            /* 애니메이션 최적화 */
+            animation-delay: calc(((25s / var(--quantity)) * (var(--position) - 1)) - 25s) !important;
+        }
+
+        .slider .list .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes autoRun {
+            from {
+                transform: translateX(100vw);
+            }
+
+            to {
+                transform: translateX(calc(-1 * var(--width)));
+            }
+        }
+
+        .slider[reverse="true"] .item {
+            animation-name: reversePlay;
+        }
+
+        @keyframes reversePlay {
+            from {
+                transform: translateX(calc(-1 * var(--width)));
+            }
+
+            to {
+                transform: translateX(100vw);
+            }
+        }
+
+        /* --- New Infographic Styles --- */
+        .infographic-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            width: 100%;
+            padding: 3rem 4rem;
+            box-sizing: border-box;
+        }
+
+        .side-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .e-card {
+            box-shadow: 0px 8px 28px -9px rgba(0, 0, 0, 0.45);
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .side-card {
+            width: 400px;
+            height: 260px;
+        }
+
+        .wave {
+            position: absolute;
+            width: 540px;
+            height: 700px;
+            opacity: 0.6;
+            left: 0;
+            top: 0;
+            margin-left: -50%;
+            margin-top: -70%;
+            background: linear-gradient(744deg, #1e3a8a, #3b82f6 60%, #93c5fd);
+            border-radius: 40%;
+            animation: wave 25s infinite linear;
+        }
+
+        .wave:nth-child(2) {
+            animation-duration: 30s;
+            top: 210px;
+        }
+
+        .wave:nth-child(3) {
+            animation-duration: 35s;
+        }
+
+        .info-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 35px;
+            box-sizing: border-box;
+            gap: 25px;
+            z-index: 10;
+        }
+
+        .icon-container {
+            width: 120px;
+            height: 120px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+
+        .image-icon {
+            width: 6em;
+            height: 6em;
+        }
+
+        .infotop {
+            text-align: left;
+            font-size: 32px;
+            position: relative;
+            z-index: 2;
+            color: rgb(255, 255, 255);
+            font-weight: 700;
+        }
+
+        .name {
+            font-size: 18px;
+            font-weight: 100;
+            position: relative;
+            top: 0.5em;
+            text-transform: lowercase;
+        }
+
+        @keyframes wave {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .center-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .center-card {
+            width: 340px;
+            height: 280px;
+            background: #1A202C;
+            /* 다크 네이비 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: 0.3s ease;
+            z-index: 10;
+        }
+
+        .center-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 0px 20px rgba(0, 200, 255, 0.7);
+        }
+
+        .center-card-text {
+            color: white;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .center-card-text h3 {
+            font-size: 2.4em;
+            font-weight: 700;
+        }
+
+        .center-card-text p {
+            font-size: 1.1em;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+
+        .hole {
+            position: absolute;
+            top: 7%;
+            left: 13%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+        }
+
+        .hole i {
+            display: block;
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border: 2px solid rgba(156, 163, 175, 0.5);
+            /* 회색 계열로 변경 */
+            border-radius: 50%;
+            opacity: 0;
+            animation-name: scale;
+            animation-duration: 4s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+
+        .hole i:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .hole i:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .hole i:nth-child(3) {
+            animation-delay: 0.8s;
+        }
+
+        .hole i:nth-child(4) {
+            animation-delay: 1.2s;
+        }
+
+        .hole i:nth-child(5) {
+            animation-delay: 1.6s;
+        }
+
+        .hole i:nth-child(6) {
+            animation-delay: 2s;
+        }
+
+        .hole i:nth-child(7) {
+            animation-delay: 2.4s;
+        }
+
+        .hole i:nth-child(8) {
+            animation-delay: 2.8s;
+        }
+
+        .hole i:nth-child(9) {
+            animation-delay: 3.2s;
+        }
+
+        .hole i:nth-child(10) {
+            animation-delay: 3.6s;
+        }
+
+        @keyframes scale {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+                box-shadow: 0 0 20px rgba(200, 200, 200, 0.3);
+            }
+
+            100% {
+                transform: scale(3);
+                opacity: 0;
+                box-shadow: 0 0 40px rgba(200, 200, 200, 0);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .infographic-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .side-cards {
+                flex-direction: row;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .side-cards {
+                flex-direction: column;
+            }
+        }
+
+        /* --- CTA 섹션 배경색 --- */
+        .cta-bg {
+            background-color: rgb(0, 68, 170);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <main>
+        <!-- 섹션 1: 영상 영역 -->
+        <section id="hero" class="relative h-screen w-full flex items-center justify-center text-white overflow-hidden">
+            <!-- Background Video -->
+            <video autoplay loop muted playsinline preload="auto"
+                class="absolute top-1/2 left-1/2 w-auto min-w-full min-h-full max-w-none -translate-x-1/2 -translate-y-1/2 z-0 object-cover">
+                <source src="https://i.imgur.com/8woM3KT.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <!-- Video Overlay -->
+            <div class="absolute inset-0 bg-black/50 z-10"></div>
+            <!-- Text Content -->
+            <div class="relative z-20 text-center px-6 hero-text-animation">
+                <h1 class="text-5xl md:text-7xl font-black leading-snug tracking-tight mb-6"
+                    style="text-shadow: 0 2px 6px rgba(0,0,0,0.6);">
+                    환경 자가측정 원솔루션
+                </h1>
+                <p class="text-2xl md:text-3xl font-normal tracking-wide"
+                    style="text-shadow: 0 1px 4px rgba(0,0,0,0.6);">
+                    청명기연환경&nbsp;<span class="font-semibold">원솔루션(ONE Solution)</span>이 복잡한 과정을 하나로 해결합니다.
+                </p>
+            </div>
+            <!-- Scroll Down Indicator -->
+            <a href="#navigation"
+                class="absolute bottom-10 z-20 text-white text-center opacity-80 hover:opacity-100 transition-opacity scroll-down-animation">
+                <span class="text-xs font-semibold tracking-widest">SCROLL DOWN</span>
+                <svg class="w-5 h-5 mx-auto mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </a>
+        </section>
+
+        <!-- 섹션 2: 네비게이션 바 -->
+        <section id="navigation" class="bg-white shadow-md sticky top-0 z-40">
+            <div class="w-full px-6 md:px-12 py-3 flex items-center">
+                <!-- Logo -->
+                <div class="text-2xl font-bold text-blue-600">
+
+                </div>
+                <!-- Navigation Links -->
+                <nav class="hidden md:flex space-x-8 items-center ml-16">
+                    <a href="#solution" class="text-gray-600 font-medium hover:text-blue-700 transition-colors">원솔루션</a>
+                    <a href="#capability" class="text-gray-600 font-medium hover:text-blue-700 transition-colors">역량</a>
+                    <a href="#core-values"
+                        class="text-gray-600 font-medium hover:text-blue-700 transition-colors">핵심가치</a>
+                    <a href="#services" class="text-gray-600 font-medium hover:text-blue-700 transition-colors">서비스</a>
+                </nav>
+                <!-- CTA Button & Mobile Menu Button -->
+                <div class="ml-auto flex items-center">
+                    <a href="http://r1418.realserver3.com/bsr/board.php?bo_table=contact" target="_blank"
+                        rel="noopener noreferrer"
+                        class="hidden md:inline-block btn-custom text-white font-bold py-2 px-6 rounded-lg transition-transform transform hover:scale-105">상담
+                        문의</a>
+                    <button id="mobile-menu-button" class="md:hidden text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+                <a href="#solution" class="block py-2 text-gray-600 hover:text-blue-700 text-center">원솔루션</a>
+                <a href="#capability" class="block py-2 text-gray-600 hover:text-blue-700 text-center">역량</a>
+                <a href="#core-values" class="block py-2 text-gray-600 hover:text-blue-700 text-center">핵심가치</a>
+                <a href="#services" class="block py-2 text-gray-600 hover:text-blue-700 text-center">서비스</a>
+                <a href="http://r1418.realserver3.com/bsr/board.php?bo_table=contact" target="_blank"
+                    rel="noopener noreferrer"
+                    class="block mt-4 btn-custom text-white text-center font-bold py-2 px-6 rounded-lg">상담 문의</a>
+            </div>
+        </section>
+
+
+        <!-- 섹션 3: 문제 제기 및 솔루션 제시 -->
+        <section id="solution" class="py-20 md:py-28 bg-white overflow-hidden">
+            <div class="w-full text-center fade-in">
+                <div class="px-9 md:px-12">
+                    <h2 class="text-8xl md:text-4xl font-bold mb-6">수질, 대기, 소음, 악취... 복잡한 자가측정, <span
+                            class=text-blue-600 mb-5">아직도 따로 관리하세요?</h2>
+                    <p class="max-w-10xl mx-auto text-1xl text-gray-600">
+                        사업장의 환경 자가측정은 선택이 아닌 필수입니다.<br>하지만 분야마다 업체를 따로 찾고, 일정을 조율하며, 제각각인 성적서를 관리하는 것은 번거로운
+                        일입니다.<br>청명기연환경의
+                        환경 자가측정 <span class="font-bold text-blue-600"><span class="highlight">원솔루션(ONE
+                                Solution)</span></span>이 그 모든 복잡함을 한번에 해결합니다.
+                    </p>
+                </div>
+
+                <!-- New Infographic -->
+                <div class="infographic-container mt-8">
+                    <!-- 좌측 카드 그룹 -->
+                    <div class="side-cards">
+                        <!-- 수질 카드 -->
+                        <div class="e-card side-card">
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                            <div class="info-wrapper">
+                                <div class="icon-container">
+                                    <img src="https://i.imgur.com/F7vVP6t.png" alt="수질 아이콘" class="image-icon">
+                                </div>
+                                <div class="infotop">수질<br><span class="name">Water Quality</span></div>
+                            </div>
+                        </div>
+                        <!-- 악취 카드 -->
+                        <div class="e-card side-card">
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                            <div class="info-wrapper">
+                                <div class="icon-container">
+                                    <img src="https://i.imgur.com/7v7QpjS.png" alt="악취 아이콘" class="image-icon">
+                                </div>
+                                <div class="infotop" style="position: relative; left: 10px;">악취<br><span
+                                        class="name">Odor</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 중앙 그룹 (카드 + 애니메이션) -->
+                    <div class="center-wrapper">
+                        <div class="hole">
+                            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                        </div>
+                        <div class="e-card center-card">
+                            <div class="center-card-text">
+                                <h3>ONE Solution</h3>
+                                <p>환경 자가측정 원솔루션</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 우측 카드 그룹 -->
+                    <div class="side-cards">
+                        <!-- 대기 카드 -->
+                        <div class="e-card side-card">
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                            <div class="info-wrapper">
+                                <div class="icon-container">
+                                    <img src="https://i.imgur.com/gII2Rek.png" alt="대기 아이콘" class="image-icon"
+                                        style="width: 5em; height: 5em;">
+                                </div>
+                                <div class="infotop" style="text-align: center;">대기<br><span class="name"> Air
+                                        Quality</span></div>
+                            </div>
+                        </div>
+                        <!-- 소음·진동 카드 -->
+                        <div class="e-card side-card">
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                            <div class="info-wrapper">
+                                <div class="icon-container">
+                                    <img src="https://i.imgur.com/Hw0jtq2.png" alt="소음·진동 아이콘" class="image-icon">
+                                </div>
+                                <div class="infotop" style="text-align: center;">소음·진동<br><span class="name"
+                                        style="position: relative; left: 10px;">Noise &
+                                        Vibration</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 섹션 4: 숫자로 증명하는 역량 -->
+        <section id="capability" class="py-20 md:py-28 bg-gray-50 overflow-hidden">
+            <div class="w-full fade-in">
+                <div class="text-center mb-16 px-6 md:px-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">데이터가 증명하는 30년 이상의 <span class="highlight">신뢰와
+                            전문성</span></h2>
+                </div>
+                <div id="counter-section" class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto px-6 md:px-12">
+                    <div class="text-center p-8 bg-white rounded-2xl shadow-lg hover-lift">
+                        <div class="text-5xl font-bold text-blue-600 mb-2"><span class="counter-value"
+                                data-target="30">0</span>+
+                        </div>
+                        <p class="text-lg font-semibold text-gray-700">업력 (년)</p>
+                    </div>
+                    <div class="text-center p-8 bg-white rounded-2xl shadow-lg hover-lift">
+                        <div class="text-5xl font-bold text-blue-600 mb-2"><span class="counter-value"
+                                data-target="30000">0</span>+
+                        </div>
+                        <p class="text-lg font-semibold text-gray-700">성공 프로젝트</p>
+                    </div>
+                    <div class="text-center p-8 bg-white rounded-2xl shadow-lg hover-lift">
+                        <div class="text-5xl font-bold text-blue-600 mb-2"><span class="counter-value"
+                                data-target="60">0</span>+
+                        </div>
+                        <p class="text-lg font-semibold text-gray-700">전문 인력</p>
+                    </div>
+                    <div class="text-center p-8 bg-white rounded-2xl shadow-lg hover-lift">
+                        <div class="text-5xl font-bold text-blue-600 mb-2"><span class="counter-value"
+                                data-target="500">0</span>+
+                        </div>
+                        <p class="text-lg font-semibold text-gray-700">최신 장비</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16 max-w-6xl mx-auto px-6 md:px-12">
+                    <!-- Card 1 -->
+                    <div
+                        class="text-center p-6 bg-white rounded-2xl shadow-lg hover-lift flex flex-col justify-center items-center h-48">
+                        <div class="text-4xl text-blue-600 mb-3"><i class="fas fa-award"></i></div>
+                        <p class="text-lg font-semibold text-gray-700 leading-tight">5대 환경 분야 면허</p>
+                    </div>
+                    <!-- Card 2 -->
+                    <div
+                        class="text-center p-6 bg-white rounded-2xl shadow-lg hover-lift flex flex-col justify-center items-center h-48">
+                        <div class="text-4xl text-blue-600 mb-3"><i class="fas fa-building-shield"></i></div>
+                        <p class="text-lg font-semibold text-gray-700 leading-tight">환경 측정대행업<br>용역능력이행평가 우수 기관</p>
+                    </div>
+                    <!-- Card 3 -->
+                    <div
+                        class="text-center p-6 bg-white rounded-2xl shadow-lg hover-lift flex flex-col justify-center items-center h-48">
+                        <div class="text-4xl text-blue-600 mb-3"><i class="fas fa-globe-asia"></i></div>
+                        <p class="text-lg font-semibold text-gray-700 leading-tight">국제숙련도<br>수질 분야 최우수 기관</p>
+                    </div>
+                    <!-- Card 4 -->
+                    <div
+                        class="text-center p-6 bg-white rounded-2xl shadow-lg hover-lift flex flex-col justify-center items-center h-48">
+                        <div class="text-4xl text-blue-600 mb-3"><i class="fas fa-trophy"></i></div>
+                        <p class="text-lg font-semibold text-gray-700 leading-tight">5회 이상 정부기관 수상</p>
+                    </div>
+                </div>
+                <!-- Slider Container -->
+                <div class="mt-24 space-y-8">
+                    <!-- 상단 슬라이더 (좌 -> 우) -->
+                    <div class="slider" reverse="true" style="--quantity: 12; --width: 250px; --height: 180px;">
+                        <div class="list">
+                            <div class="item" style="--position: 1"><img src="https://i.imgur.com/Cmp5oPZ.jpeg"
+                                    alt="Image 1" loading="lazy"></div>
+                            <div class="item" style="--position: 2"><img src="https://i.imgur.com/eJaxBLl.jpeg"
+                                    alt="Image 2" loading="lazy"></div>
+                            <div class="item" style="--position: 3"><img src="https://i.imgur.com/ESjPAxd.jpeg"
+                                    alt="Image 3" loading="lazy"></div>
+                            <div class="item" style="--position: 4"><img src="https://i.imgur.com/Pg27EOd.jpeg"
+                                    alt="Image 4" loading="lazy"></div>
+                            <div class="item" style="--position: 5"><img src="https://i.imgur.com/KK4Iw88.jpeg"
+                                    alt="Image 5" loading="lazy"></div>
+                            <div class="item" style="--position: 6"><img src="https://i.imgur.com/ATgCKYi.jpeg"
+                                    alt="Image 6" loading="lazy"></div>
+                            <div class="item" style="--position: 7"><img src="https://i.imgur.com/ZFpp5vN.jpeg"
+                                    alt="Image 7" loading="lazy"></div>
+                            <div class="item" style="--position: 8"><img src="https://i.imgur.com/LHaKHw9.jpeg"
+                                    alt="Image 8" loading="lazy"></div>
+                            <div class="item" style="--position: 9"><img src="https://i.imgur.com/JS5ho1p.jpeg"
+                                    alt="Image 9" loading="lazy"></div>
+                            <div class="item" style="--position: 10"><img src="https://i.imgur.com/8ufriCQ.jpeg"
+                                    alt="Image 10" loading="lazy"></div>
+                            <div class="item" style="--position: 11"><img src="https://i.imgur.com/6cNaVOg.jpeg"
+                                    alt="Image 11" loading="lazy"></div>
+                            <div class="item" style="--position: 12"><img src="https://i.imgur.com/vb9Fxin.jpeg"
+                                    alt="Image 12" loading="lazy"></div>
+                        </div>
+                    </div>
+                    <!-- 하단 슬라이더 (우 -> 좌) -->
+                    <div class="slider" style="--quantity: 16; --width: 180px; --height: 250px;">
+                        <div class="list">
+                            <div class="item" style="--position: 1"><img src="https://i.imgur.com/yDAGJ9j.jpeg"
+                                    alt="New Image 1" loading="lazy"></div>
+                            <div class="item" style="--position: 2"><img src="https://i.imgur.com/qHRxBHi.jpeg"
+                                    alt="New Image 2" loading="lazy"></div>
+                            <div class="item" style="--position: 3"><img src="https://i.imgur.com/RDiIsBB.jpeg"
+                                    alt="New Image 3" loading="lazy"></div>
+                            <div class="item" style="--position: 4"><img src="https://i.imgur.com/9StdfVg.jpeg"
+                                    alt="New Image 4" loading="lazy"></div>
+                            <div class="item" style="--position: 5"><img src="https://i.imgur.com/bJQujNt.jpeg"
+                                    alt="New Image 5" loading="lazy"></div>
+                            <div class="item" style="--position: 6"><img src="https://i.imgur.com/UCJAKzg.jpeg"
+                                    alt="New Image 6" loading="lazy"></div>
+                            <div class="item" style="--position: 7"><img src="https://i.imgur.com/MzRYv2y.jpeg"
+                                    alt="New Image 7" loading="lazy"></div>
+                            <div class="item" style="--position: 8"><img src="https://i.imgur.com/WGclz2S.jpeg"
+                                    alt="New Image 8" loading="lazy"></div>
+                            <div class="item" style="--position: 9"><img src="https://i.imgur.com/21qN27X.jpeg"
+                                    alt="New Image 9" loading="lazy"></div>
+                            <div class="item" style="--position: 10"><img src="https://i.imgur.com/dlu6pyS.jpeg"
+                                    alt="New Image 10" loading="lazy"></div>
+                            <div class="item" style="--position: 11"><img src="https://i.imgur.com/7ARWUX5.jpeg"
+                                    alt="New Image 11" loading="lazy"></div>
+                            <div class="item" style="--position: 12"><img src="https://i.imgur.com/Jz0cZhk.jpeg"
+                                    alt="New Image 12" loading="lazy"></div>
+                            <div class="item" style="--position: 13"><img src="https://i.imgur.com/QTFSJAy.jpeg"
+                                    alt="New Image 13" loading="lazy"></div>
+                            <div class="item" style="--position: 14"><img src="https://i.imgur.com/OzSYUOG.jpeg"
+                                    alt="New Image 14" loading="lazy"></div>
+                            <div class="item" style="--position: 15"><img src="https://i.imgur.com/wg2XKSy.jpeg"
+                                    alt="New Image 15" loading="lazy"></div>
+                            <div class="item" style="--position: 16"><img src="https://i.imgur.com/yiG326c.jpeg"
+                                    alt="New Image 16" loading="lazy"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 5: 고객의 신뢰가 증명하는 맞춤형 서비스 범위 -->
+        <section id="service-range" class="py-20 md:py-28 bg-white overflow-hidden">
+            <div class="w-full px-6 md:px-12 fade-in">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4"><span class="highlight">대규모 통합환경허가</span>부터 <span
+                            class="highlight">4, 5종 사업장</span>까지</h2>
+                    <p class="text-lg text-gray-600">복잡한 환경 자가측정,<strong>'원솔루션'</strong>으로 한번에 해결합니다.</p>
+                </div>
+                <div class="max-w-screen-xl mx-auto">
+                    <div class="max-w-3xl mx-auto text-lg text-gray-700 leading-relaxed mb-20 text-center">
+                        <p>
+                            청명기연환경은 통합환경허가 사업장의 복잡한 요구사항부터 소규모 사업장의 구체적인 필요까지,<br>고객의 상황과 니즈에 완벽히 부합하는 맞춤형 원솔루션을 제공합니다.
+                        </p>
+                    </div>
+                    <!-- Spectrum Infographic -->
+                    <div id="infographic" class="spectrum-container relative w-full">
+                        <!-- Spectrum Line -->
+                        <div class="absolute top-1/2 left-0 w-full h-2 bg-gray-200 rounded-full -translate-y-1/2">
+                            <div class="h-full spectrum-line rounded-full"></div>
+                        </div>
+
+                        <div class="relative flex justify-between items-start w-full">
+
+                            <!-- 1. 통합환경허가 사업장 -->
+                            <div class="spectrum-item flex flex-col items-center">
+                                <div
+                                    class="bg-white rounded-full p-5 shadow-lg border-4 border-white mb-4 flex items-center justify-center">
+                                    <div class="w-20 h-20 dark-navy-icon"></div>
+                                </div>
+                                <p class="font-bold text-lg text-gray-700 mt-2">통합환경허가 사업장</p>
+                            </div>
+
+                            <!-- 2. 정부/대학 -->
+                            <div class="spectrum-item flex flex-col items-center">
+                                <div class="bg-white rounded-full p-5 shadow-lg border-4 border-white mb-4">
+                                    <svg class="w-20 h-20 text-[#2563eb]" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
+                                    </svg>
+                                </div>
+                                <p class="font-bold text-lg text-gray-700 mt-2">정부/대학</p>
+                            </div>
+
+                            <!-- 3. 연구소 -->
+                            <div class="spectrum-item flex flex-col items-center">
+                                <div class="bg-white rounded-full p-5 shadow-lg border-4 border-white mb-4">
+                                    <svg class="w-20 h-20 text-[#3b82f6]" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.428 15.428a2 2 0 0 0-1.022-.547l-2.387-.477a6 6 0 0 0-3.86.517l-.318.158a6 6 0 0 1-3.86.517L6.05 15.21a2 2 0 0 0-1.806.547M8 4h8l-1 1v5.172a2 2 0 0 0 .586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 0 0 9 10.172V5L8 4z" />
+                                    </svg>
+                                </div>
+                                <p class="font-bold text-lg text-gray-700 mt-2">연구소</p>
+                            </div>
+
+                            <!-- 4. 4, 5종 소규모 사업장 -->
+                            <div class="spectrum-item flex flex-col items-center">
+                                <div
+                                    class="bg-white rounded-full p-5 shadow-lg border-4 border-white mb-4 flex items-center justify-center">
+                                    <img src="https://i.imgur.com/XAgOLEm.png" alt="소규모 사업장 아이콘" class="w-20 h-20">
+                                </div>
+                                <p class="font-bold text-lg text-gray-700 mt-2">4, 5종 소규모 사업장</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-center mt-20 text-xl font-semibold text-gray-800">"대기업부터 중소·중견기업까지, 모두를 위한 최적의 파트너"
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 6: 환경 자가측정 원솔루션의 3가지 핵심 가치 -->
+        <section id="core-values" class="py-20 md:py-28 bg-gray-50 overflow-hidden">
+            <div class="w-full px-6 md:px-12 fade-in">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">결과로 증명하는 압도적인 역량, <br class="md:hidden"><span
+                            class="highlight">환경 자가측정 원솔루션</span>이 기준이 됩니다.</h2>
+                </div>
+                <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-10">
+                    <!-- Card 1: 전문성 -->
+                    <div class="bg-white p-8 rounded-2xl shadow-lg hover-lift flex flex-col items-center text-center">
+                        <span class="text-5xl mb-4"><i class="fas fa-medal text-yellow-500"></i></span>
+                        <h3 class="text-2xl font-bold mb-4">공인된 전문성</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            환경 측정대행업 용역능력이행평가 우수 기관으로 선정된 것은, 우리의 전문성이 <strong>국가에 의해 검증</strong>되었음을 의미합니다. 여기에
+                            <strong>30년 이상의
+                                업력</strong>, 국제숙련도
+                            수질분야 <strong>최우수 기관</strong> 선정, 5회 이상의 정부기관 수상 실적이 더해져, 귀사의 모든 자가측정 업무에 대한 <strong>가장 확실한
+                                신뢰를
+                                보증</strong>합니다.
+                        </p>
+                    </div>
+                    <!-- Card 2: 통합 인프라 -->
+                    <div class="bg-white p-8 rounded-2xl shadow-lg hover-lift flex flex-col items-center text-center">
+                        <span class="text-5xl mb-4"><i class="fas fa-cogs text-gray-500"></i></span>
+                        <h3 class="text-2xl font-bold mb-4">통합 인프라</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            <strong>박사, 석사, 측정분석사, 환경기사</strong> 등 10년 이상의 풍부한 경험을 갖춘 60명 이상의 전문가와 500대 이상의 최신 장비, 그리고
+                            5대 환경 분야 면허를
+                            바탕으로,<br><strong>4대 분야 모두</strong>를 직접 수행할 수 있는 <strong>압도적인 인프라</strong>를 갖추었습니다. 이것이 바로 여러
+                            업체를 거칠 필요 없는,
+                            진정한 <strong>'환경 자가측정 원솔루션'</strong>이 가능한 이유입니다.
+                        </p>
+                    </div>
+                    <!-- Card 3: 혁신 -->
+                    <div class="bg-white p-8 rounded-2xl shadow-lg hover-lift flex flex-col items-center text-center">
+                        <span class="text-5xl mb-4"><i class="fas fa-lightbulb text-blue-500"></i></span>
+                        <h3 class="text-2xl font-bold mb-4">끊임없는 혁신</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            우리는 현재에 안주하지 않습니다. <strong>'연구지원솔루션(RSS)'</strong> 운영을 통한 국내 유수의 대학 및 연구기관과의 산학협력 및
+                            <strong>R&D
+                                연구개발</strong>은, 청명기연환경이 항상 한 차원 높은 수준의 서비스를 제공하기 위해 끊임없이 노력하고 있다는 증거입니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 7: 서비스 분야 -->
+        <section id="services" class="py-20 md:py-28 bg-white overflow-hidden">
+            <div class="w-full px-6 md:px-12 fade-in">
+                <div class="text-center mb-20">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">다음과 같은 모든 환경 분야의 자가측정을 <span class="highlight">통합적으로
+                            관리</span>합니다.</h2>
+                    <p class="text-lg text-gray-600">각 아이콘을 <strong class="font-semibold">클릭</strong>하여 자세한 내용을 알아보세요.
+                    </p>
+                </div>
+                <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+
+                    <!-- Service Item 1: 수질 -->
+                    <a href="http://r1418.realserver3.com/sub/business02.php" target="_blank"
+                        class="group relative text-center">
+                        <div class="relative inline-block">
+                            <div
+                                class="absolute -inset-2 bg-blue-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg">
+                            </div>
+                            <div
+                                class="relative p-8 bg-blue-50 rounded-full shadow-lg hover-lift flex items-center justify-center w-40 h-40">
+                                <img src="https://i.imgur.com/F7vVP6t.png" alt="수질 아이콘" class="w-24 h-24">
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold mt-6 mb-2 text-blue-800">수질 자가측정</h3>
+                        <!-- Tooltip -->
+                        <div
+                            class="absolute bottom-full mb-12 w-max left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            <div class="bg-gray-800 text-white text-sm rounded-lg py-2 px-4">
+                                폐수, 방류수, 오염공정시험기준
+                                <div
+                                    class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-800">
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Service Item 2: 대기 -->
+                    <a href="http://r1418.realserver3.com/sub/business04.php" target="_blank"
+                        class="group relative text-center">
+                        <div class="relative inline-block">
+                            <div
+                                class="absolute -inset-2 bg-green-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg">
+                            </div>
+                            <div
+                                class="relative p-8 bg-green-50 rounded-full shadow-lg hover-lift flex items-center justify-center w-40 h-40">
+                                <img src="https://i.imgur.com/gII2Rek.png" alt="대기 아이콘" class="w-24 h-24">
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold mt-6 mb-2 text-green-800">대기 자가측정</h3>
+                        <!-- Tooltip -->
+                        <div
+                            class="absolute bottom-full mb-12 w-max left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            <div class="bg-gray-800 text-white text-sm rounded-lg py-2 px-4">
+                                굴뚝, 배출가스, 대기오염물질
+                                <div
+                                    class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-800">
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Service Item 3: 소음·진동 -->
+                    <a href="http://r1418.realserver3.com/sub/business06.php" target="_blank"
+                        class="group relative text-center">
+                        <div class="relative inline-block">
+                            <div
+                                class="absolute -inset-2 bg-yellow-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg">
+                            </div>
+                            <div
+                                class="relative p-8 bg-yellow-50 rounded-full shadow-lg hover-lift flex items-center justify-center w-40 h-40">
+                                <img src="https://i.imgur.com/Hw0jtq2.png" alt="소음·진동 아이콘" class="w-24 h-24">
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold mt-6 mb-2 text-yellow-800">소음·진동 자가측정</h3>
+                        <!-- Tooltip -->
+                        <div
+                            class="absolute bottom-full mb-12 w-max left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            <div class="bg-gray-800 text-white text-sm rounded-lg py-2 px-4">
+                                생활소음, 공장소음, 진동
+                                <div
+                                    class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-800">
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Service Item 4: 악취 -->
+                    <a href="http://r1418.realserver3.com/sub/business05.php" target="_blank"
+                        class="group relative text-center">
+                        <div class="relative inline-block">
+                            <div
+                                class="absolute -inset-2 bg-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg">
+                            </div>
+                            <div
+                                class="relative p-8 bg-gray-100 rounded-full shadow-lg hover-lift flex items-center justify-center w-40 h-40">
+                                <img src="https://i.imgur.com/7v7QpjS.png" alt="악취 아이콘" class="w-24 h-24">
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold mt-6 mb-2 text-gray-800">악취 자가측정</h3>
+                        <!-- Tooltip -->
+                        <div
+                            class="absolute bottom-full mb-12 w-max left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            <div class="bg-gray-800 text-white text-sm rounded-lg py-2 px-4">
+                                복합악취, 지정악취물질
+                                <div
+                                    class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-800">
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 8: 최종 행동 유도 (CTA) -->
+        <section id="cta" class="cta-bg">
+            <div class="w-full px-6 md:px-12 py-20 text-center text-white fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">이제, 복잡한 환경 자가측정은 전문가에게 맡기고</h2>
+                <p class="text-xl md:text-2xl mb-10">비즈니스의 본질에만 집중하십시오.</p>
+                <a href="http://r1418.realserver3.com/bsr/board.php?bo_table=contact" target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-block bg-white text-[rgb(0,68,170)] font-bold text-lg px-10 py-4 rounded-full shadow-lg hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 ease-in-out">
+                    내 사업장에 맞는 원솔루션 상담받기
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="bg-gray-800 text-gray-400 py-12">
+        <div class="w-full px-6 md:px-12 text-center">
+            <p>&copy; 2024 청명기연환경. All Rights Reserved.</p>
+            <p class="text-sm mt-2">본 페이지는 초기 시안이며, 내용은 얼마든지 수정 가능합니다.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // --- Mobile Menu Toggle ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // --- 숫자 카운터 애니메이션 ---
+            const counterSection = document.getElementById('counter-section');
+            if (counterSection) {
+                const counters = counterSection.querySelectorAll('.counter-value');
+                const speed = 200;
+
+                const animateCounters = (entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            counters.forEach(counter => {
+                                const updateCount = () => {
+                                    const target = +counter.getAttribute('data-target');
+                                    const count = +counter.innerText.replace(/,/g, '');
+                                    const increment = target / speed;
+                                    if (count < target) {
+                                        counter.innerText = Math.ceil(count + increment).toLocaleString();
+                                        setTimeout(updateCount, 15);
+                                    } else {
+                                        counter.innerText = target.toLocaleString();
+                                    }
+                                };
+                                updateCount();
+                            });
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                };
+                const counterObserver = new IntersectionObserver(animateCounters, { root: null, threshold: 0.5 });
+                if (counterSection) {
+                    counterObserver.observe(counterSection);
+                }
+            }
+
+            // --- 스크롤에 따른 페이드인 효과 ---
+            const faders = document.querySelectorAll('.fade-in');
+            const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+            const appearOnScroll = new IntersectionObserver(function (entries, observer) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, appearOptions);
+            faders.forEach(fader => appearOnScroll.observe(fader));
+
+            // --- Spectrum Infographic Animation ---
+            const infographic = document.getElementById('infographic');
+            if (infographic) {
+                const infographicObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            infographic.classList.add('is-visible');
+                            infographicObserver.unobserve(entry.target); // Animate only once
+                        }
+                    });
+                }, {
+                    threshold: 0.5 // 50% visible
+                });
+                infographicObserver.observe(infographic);
+            }
+        });
+
+        // --- 서비스 분야 카드 토글 로직 ---
+        (function () {
+            let lastOpenedServiceCard = null;
+
+            window.toggleServiceCard = function (element) {
+                const isOpening = !element.classList.contains('active');
+                // 다른 카드가 열려있으면 닫기
+                if (isOpening && lastOpenedServiceCard && lastOpenedServiceCard !== element) {
+                    lastOpenedServiceCard.classList.remove('active');
+                }
+                element.classList.toggle('active');
+
+                if (element.classList.contains('active')) {
+                    lastOpenedServiceCard = element;
+                } else {
+                    lastOpenedServiceCard = null;
+                }
+            }
+        })();
+    </script>
+
+</body>
+
+</html>
