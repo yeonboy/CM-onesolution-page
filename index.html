@@ -172,7 +172,7 @@
             mask-position: center;
         }
 
-        /* --- Auto Slider --- */
+        /* --- Auto Slider (Optimized) --- */
         .slider {
             width: 100%;
             height: var(--height);
@@ -182,25 +182,22 @@
 
         .slider .list {
             display: flex;
-            width: 100%;
-            min-width: calc(var(--width) * var(--quantity));
-            position: relative;
+            width: fit-content;
+            /* Let the content define the width */
+            animation: autoRun var(--duration) linear infinite;
+            will-change: transform;
         }
 
         .slider .list .item {
-            position: absolute;
-            left: 0;
+            /* No absolute positioning and individual animation */
             width: var(--width);
             height: var(--height);
-            animation: autoRun 25s linear infinite;
-            transition: filter 0.5s;
+            margin: 0 10px;
+            flex-shrink: 0;
+            /* Prevent items from shrinking */
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            margin: 0 10px;
-            will-change: transform;
-            /* 애니메이션 최적화 */
-            animation-delay: calc(((25s / var(--quantity)) * (var(--position) - 1)) - 25s) !important;
         }
 
         .slider .list .item img {
@@ -211,25 +208,26 @@
 
         @keyframes autoRun {
             from {
-                transform: translateX(100vw);
+                transform: translateX(0);
             }
 
             to {
-                transform: translateX(calc(-1 * var(--width)));
+                /* Animate by the width of the original set of items */
+                transform: translateX(calc(-1 * (var(--width) + 20px) * var(--quantity)));
             }
         }
 
-        .slider[reverse="true"] .item {
+        .slider[reverse="true"] .list {
             animation-name: reversePlay;
         }
 
         @keyframes reversePlay {
             from {
-                transform: translateX(calc(-1 * var(--width)));
+                transform: translateX(calc(-1 * (var(--width) + 20px) * var(--quantity)));
             }
 
             to {
-                transform: translateX(100vw);
+                transform: translateX(0);
             }
         }
 
@@ -292,7 +290,7 @@
         .info-wrapper {
             position: absolute;
             top: 50%;
-            left: 0;
+            left: 0%;
             transform: translateY(-50%);
             width: 100%;
             display: flex;
@@ -332,7 +330,7 @@
         }
 
         .name {
-            font-size: 18px;
+            font-size: 25px;
             font-weight: 100;
             position: relative;
             top: 0.5em;
@@ -577,21 +575,17 @@
         <section id="solution" class="py-20 md:py-28 bg-white overflow-hidden">
             <div class="w-full text-center fade-in">
                 <div class="px-9 md:px-12">
-                    <h2 class="text-8xl md:text-4xl font-bold mb-6">수질, 대기, 소음, 악취... 복잡한 자가측정, <span
-                            class=text-blue-600 mb-5">아직도 따로 관리하세요?</h2>
-                    <p class="max-w-10xl mx-auto text-1xl text-gray-600">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">수질, 대기, 소음, 악취... 복잡한 자가측정, <span
+                            class="text-blue-600">아직도 따로 관리하세요?</span></h2>
+                    <p class="max-w-3xl mx-auto text-lg text-gray-600">
                         사업장의 환경 자가측정은 선택이 아닌 필수입니다.<br>하지만 분야마다 업체를 따로 찾고, 일정을 조율하며, 제각각인 성적서를 관리하는 것은 번거로운
-                        일입니다.<br>청명기연환경의
-                        환경 자가측정 <span class="font-bold text-blue-600"><span class="highlight">원솔루션(ONE
+                        일입니다.<br>청명기연환경의 환경 자가측정 <span class="font-bold text-blue-600"><span class="highlight">원솔루션(ONE
                                 Solution)</span></span>이 그 모든 복잡함을 한번에 해결합니다.
                     </p>
                 </div>
 
-                <!-- New Infographic -->
                 <div class="infographic-container mt-8">
-                    <!-- 좌측 카드 그룹 -->
                     <div class="side-cards">
-                        <!-- 수질 카드 -->
                         <div class="e-card side-card">
                             <div class="wave"></div>
                             <div class="wave"></div>
@@ -603,7 +597,6 @@
                                 <div class="infotop">수질<br><span class="name">Water Quality</span></div>
                             </div>
                         </div>
-                        <!-- 악취 카드 -->
                         <div class="e-card side-card">
                             <div class="wave"></div>
                             <div class="wave"></div>
@@ -618,7 +611,6 @@
                         </div>
                     </div>
 
-                    <!-- 중앙 그룹 (카드 + 애니메이션) -->
                     <div class="center-wrapper">
                         <div class="hole">
                             <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
@@ -631,9 +623,7 @@
                         </div>
                     </div>
 
-                    <!-- 우측 카드 그룹 -->
                     <div class="side-cards">
-                        <!-- 대기 카드 -->
                         <div class="e-card side-card">
                             <div class="wave"></div>
                             <div class="wave"></div>
@@ -643,11 +633,9 @@
                                     <img src="https://i.imgur.com/gII2Rek.png" alt="대기 아이콘" class="image-icon"
                                         style="width: 5em; height: 5em;">
                                 </div>
-                                <div class="infotop" style="text-align: center;">대기<br><span class="name"> Air
-                                        Quality</span></div>
+                                <div class="infotop">대기<br><span class="name"> Air Quality</span></div>
                             </div>
                         </div>
-                        <!-- 소음·진동 카드 -->
                         <div class="e-card side-card">
                             <div class="wave"></div>
                             <div class="wave"></div>
@@ -656,9 +644,8 @@
                                 <div class="icon-container">
                                     <img src="https://i.imgur.com/Hw0jtq2.png" alt="소음·진동 아이콘" class="image-icon">
                                 </div>
-                                <div class="infotop" style="text-align: center;">소음·진동<br><span class="name"
-                                        style="position: relative; left: 10px;">Noise &
-                                        Vibration</span></div>
+                                <div class="infotop">소음·진동<br><span class="name"
+                                        style="position: relative; left: 10px;">Noise & Vibration</span></div>
                             </div>
                         </div>
                     </div>
@@ -677,26 +664,22 @@
                 <div id="counter-section" class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto px-6 md:px-12">
                     <div class="text-center p-8 bg-white rounded-2xl shadow-lg hover-lift">
                         <div class="text-5xl font-bold text-blue-600 mb-2"><span class="counter-value"
-                                data-target="30">0</span>+
-                        </div>
+                                data-target="30">0</span>+</div>
                         <p class="text-lg font-semibold text-gray-700">업력 (년)</p>
                     </div>
                     <div class="text-center p-8 bg-white rounded-2xl shadow-lg hover-lift">
                         <div class="text-5xl font-bold text-blue-600 mb-2"><span class="counter-value"
-                                data-target="30000">0</span>+
-                        </div>
+                                data-target="30000">0</span>+</div>
                         <p class="text-lg font-semibold text-gray-700">성공 프로젝트</p>
                     </div>
                     <div class="text-center p-8 bg-white rounded-2xl shadow-lg hover-lift">
                         <div class="text-5xl font-bold text-blue-600 mb-2"><span class="counter-value"
-                                data-target="60">0</span>+
-                        </div>
+                                data-target="60">0</span>+</div>
                         <p class="text-lg font-semibold text-gray-700">전문 인력</p>
                     </div>
                     <div class="text-center p-8 bg-white rounded-2xl shadow-lg hover-lift">
                         <div class="text-5xl font-bold text-blue-600 mb-2"><span class="counter-value"
-                                data-target="500">0</span>+
-                        </div>
+                                data-target="500">0</span>+</div>
                         <p class="text-lg font-semibold text-gray-700">최신 장비</p>
                     </div>
                 </div>
@@ -729,7 +712,8 @@
                 <!-- Slider Container -->
                 <div class="mt-24 space-y-8">
                     <!-- 상단 슬라이더 (좌 -> 우) -->
-                    <div class="slider" reverse="true" style="--quantity: 12; --width: 250px; --height: 180px;">
+                    <div class="slider" reverse="true"
+                        style="--quantity: 12; --width: 250px; --height: 180px; --duration: 40s;">
                         <div class="list">
                             <div class="item" style="--position: 1"><img src="https://i.imgur.com/Cmp5oPZ.jpeg"
                                     alt="Image 1" loading="lazy"></div>
@@ -758,40 +742,46 @@
                         </div>
                     </div>
                     <!-- 하단 슬라이더 (우 -> 좌) -->
-                    <div class="slider" style="--quantity: 16; --width: 180px; --height: 250px;">
+                    <div class="slider" style="--quantity: 19; --width: 180px; --height: 250px; --duration: 50s;">
                         <div class="list">
-                            <div class="item" style="--position: 1"><img src="https://i.imgur.com/yDAGJ9j.jpeg"
-                                    alt="New Image 1" loading="lazy"></div>
-                            <div class="item" style="--position: 2"><img src="https://i.imgur.com/qHRxBHi.jpeg"
-                                    alt="New Image 2" loading="lazy"></div>
-                            <div class="item" style="--position: 3"><img src="https://i.imgur.com/RDiIsBB.jpeg"
-                                    alt="New Image 3" loading="lazy"></div>
-                            <div class="item" style="--position: 4"><img src="https://i.imgur.com/9StdfVg.jpeg"
-                                    alt="New Image 4" loading="lazy"></div>
-                            <div class="item" style="--position: 5"><img src="https://i.imgur.com/bJQujNt.jpeg"
-                                    alt="New Image 5" loading="lazy"></div>
-                            <div class="item" style="--position: 6"><img src="https://i.imgur.com/UCJAKzg.jpeg"
-                                    alt="New Image 6" loading="lazy"></div>
-                            <div class="item" style="--position: 7"><img src="https://i.imgur.com/MzRYv2y.jpeg"
-                                    alt="New Image 7" loading="lazy"></div>
-                            <div class="item" style="--position: 8"><img src="https://i.imgur.com/WGclz2S.jpeg"
-                                    alt="New Image 8" loading="lazy"></div>
-                            <div class="item" style="--position: 9"><img src="https://i.imgur.com/21qN27X.jpeg"
-                                    alt="New Image 9" loading="lazy"></div>
-                            <div class="item" style="--position: 10"><img src="https://i.imgur.com/dlu6pyS.jpeg"
-                                    alt="New Image 10" loading="lazy"></div>
-                            <div class="item" style="--position: 11"><img src="https://i.imgur.com/7ARWUX5.jpeg"
-                                    alt="New Image 11" loading="lazy"></div>
-                            <div class="item" style="--position: 12"><img src="https://i.imgur.com/Jz0cZhk.jpeg"
-                                    alt="New Image 12" loading="lazy"></div>
-                            <div class="item" style="--position: 13"><img src="https://i.imgur.com/QTFSJAy.jpeg"
-                                    alt="New Image 13" loading="lazy"></div>
-                            <div class="item" style="--position: 14"><img src="https://i.imgur.com/OzSYUOG.jpeg"
-                                    alt="New Image 14" loading="lazy"></div>
-                            <div class="item" style="--position: 15"><img src="https://i.imgur.com/wg2XKSy.jpeg"
-                                    alt="New Image 15" loading="lazy"></div>
-                            <div class="item" style="--position: 16"><img src="https://i.imgur.com/yiG326c.jpeg"
-                                    alt="New Image 16" loading="lazy"></div>
+                            <div class="item" style="--position: 1"><img src="https://i.imgur.com/7WdtoUl.jpeg"
+                                    alt="Image 1" loading="lazy"></div>
+                            <div class="item" style="--position: 2"><img src="https://i.imgur.com/ofH2hBH.jpeg"
+                                    alt="Image 2" loading="lazy"></div>
+                            <div class="item" style="--position: 3"><img src="https://i.imgur.com/G8UDblu.jpeg"
+                                    alt="Image 3" loading="lazy"></div>
+                            <div class="item" style="--position: 4"><img src="https://i.imgur.com/aP4iRfJ.jpeg"
+                                    alt="Image 4" loading="lazy"></div>
+                            <div class="item" style="--position: 5"><img src="https://i.imgur.com/HerwNha.jpeg"
+                                    alt="Image 5" loading="lazy"></div>
+                            <div class="item" style="--position: 6"><img src="https://i.imgur.com/yJN33WZ.jpeg"
+                                    alt="Image 6" loading="lazy"></div>
+                            <div class="item" style="--position: 7"><img src="https://i.imgur.com/yqJbRup.jpeg"
+                                    alt="Image 7" loading="lazy"></div>
+                            <div class="item" style="--position: 8"><img src="https://i.imgur.com/wH2lwgj.jpeg"
+                                    alt="Image 8" loading="lazy"></div>
+                            <div class="item" style="--position: 9"><img src="https://i.imgur.com/PbepXPR.jpeg"
+                                    alt="Image 9" loading="lazy"></div>
+                            <div class="item" style="--position: 10"><img src="https://i.imgur.com/0CB607b.jpeg"
+                                    alt="Image 10" loading="lazy"></div>
+                            <div class="item" style="--position: 11"><img src="https://i.imgur.com/wmVsvTA.png"
+                                    alt="Image 11" loading="lazy"></div>
+                            <div class="item" style="--position: 12"><img src="https://i.imgur.com/UZOclQZ.png"
+                                    alt="Image 12" loading="lazy"></div>
+                            <div class="item" style="--position: 13"><img src="https://i.imgur.com/YgkBA6v.jpeg"
+                                    alt="Image 13" loading="lazy"></div>
+                            <div class="item" style="--position: 14"><img src="https://i.imgur.com/OhLOZX3.jpeg"
+                                    alt="Image 14" loading="lazy"></div>
+                            <div class="item" style="--position: 15"><img src="https://i.imgur.com/bmJozqY.jpeg"
+                                    alt="Image 15" loading="lazy"></div>
+                            <div class="item" style="--position: 16"><img src="https://i.imgur.com/MQ1FuY8.jpeg"
+                                    alt="Image 16" loading="lazy"></div>
+                            <div class="item" style="--position: 17"><img src="https://i.imgur.com/tfejeOf.jpeg"
+                                    alt="Image 17" loading="lazy"></div>
+                            <div class="item" style="--position: 18"><img src="https://i.imgur.com/nWCoyfc.jpeg"
+                                    alt="Image 18" loading="lazy"></div>
+                            <div class="item" style="--position: 19"><img src="https://i.imgur.com/oiU29ng.jpeg"
+                                    alt="Image 19" loading="lazy"></div>
                         </div>
                     </div>
                 </div>
@@ -804,12 +794,15 @@
                 <div class="text-center mb-16">
                     <h2 class="text-3xl md:text-4xl font-bold mb-4"><span class="highlight">대규모 통합환경허가</span>부터 <span
                             class="highlight">4, 5종 사업장</span>까지</h2>
-                    <p class="text-lg text-gray-600">복잡한 환경 자가측정,<strong>'원솔루션'</strong>으로 한번에 해결합니다.</p>
+                    <p class="text-lg text-gray-600">복잡한 환경 자가측정, '원솔루션'으로 한번에 해결합니다.</p>
                 </div>
                 <div class="max-w-screen-xl mx-auto">
-                    <div class="max-w-3xl mx-auto text-lg text-gray-700 leading-relaxed mb-20 text-center">
+                    <div class="max-w-3xl mx-auto text-1g text-gray-700 leading-relaxed mb-30 text-center">
                         <p>
-                            청명기연환경은 통합환경허가 사업장의 복잡한 요구사항부터 소규모 사업장의 구체적인 필요까지,<br>고객의 상황과 니즈에 완벽히 부합하는 맞춤형 원솔루션을 제공합니다.
+                            청명기연환경은 통합환경허가 사업장의 복잡한 요구사항부터 소규모 사업장의 구체적인 필요까지, 고객의 상황과 니즈에 완벽히 부합하는 맞춤형 원솔루션을 제공합니다.
+                        </p>
+                        <p class="mt-10">
+                            대기업, 정부기관, 대학교, 연구소부터 중소·중견기업에 이르기까지, 수많은 고객사의 신뢰가 우리의 전문성을 증명합니다.
                         </p>
                     </div>
                     <!-- Spectrum Infographic -->
@@ -883,11 +876,8 @@
                         <span class="text-5xl mb-4"><i class="fas fa-medal text-yellow-500"></i></span>
                         <h3 class="text-2xl font-bold mb-4">공인된 전문성</h3>
                         <p class="text-gray-600 leading-relaxed">
-                            환경 측정대행업 용역능력이행평가 우수 기관으로 선정된 것은, 우리의 전문성이 <strong>국가에 의해 검증</strong>되었음을 의미합니다. 여기에
-                            <strong>30년 이상의
-                                업력</strong>, 국제숙련도
-                            수질분야 <strong>최우수 기관</strong> 선정, 5회 이상의 정부기관 수상 실적이 더해져, 귀사의 모든 자가측정 업무에 대한 <strong>가장 확실한
-                                신뢰를
+                            환경 측정대행업 용역능력이행평가 우수 기관으로 선정된 것은, 우리의 전문성이 <strong>국가에 의해 검증</strong>되었음을 의미합니다. 여기에 30년 이상의
+                            업력, 국제숙련도 수질분야 최우수 기관 선정, 5회 이상의 정부기관 수상 실적이 더해져, 귀사의 모든 자가측정 업무에 대한 <strong>가장 확실한 신뢰를
                                 보증</strong>합니다.
                         </p>
                     </div>
@@ -897,10 +887,8 @@
                         <h3 class="text-2xl font-bold mb-4">통합 인프라</h3>
                         <p class="text-gray-600 leading-relaxed">
                             <strong>박사, 석사, 측정분석사, 환경기사</strong> 등 10년 이상의 풍부한 경험을 갖춘 60명 이상의 전문가와 500대 이상의 최신 장비, 그리고
-                            5대 환경 분야 면허를
-                            바탕으로,<br><strong>4대 분야 모두</strong>를 직접 수행할 수 있는 <strong>압도적인 인프라</strong>를 갖추었습니다. 이것이 바로 여러
-                            업체를 거칠 필요 없는,
-                            진정한 <strong>'환경 자가측정 원솔루션'</strong>이 가능한 이유입니다.
+                            5대 환경 분야 면허를 바탕으로, <strong>4대 분야 모두</strong>를 직접 수행할 수 있는 <strong>압도적인 인프라</strong>를 갖추었습니다.
+                            이것이 바로 여러 업체를 거칠 필요 없는, 진정한 '환경 자가측정 원솔루션'이 가능한 이유입니다.
                         </p>
                     </div>
                     <!-- Card 3: 혁신 -->
@@ -909,8 +897,7 @@
                         <h3 class="text-2xl font-bold mb-4">끊임없는 혁신</h3>
                         <p class="text-gray-600 leading-relaxed">
                             우리는 현재에 안주하지 않습니다. <strong>'연구지원솔루션(RSS)'</strong> 운영을 통한 국내 유수의 대학 및 연구기관과의 산학협력 및
-                            <strong>R&D
-                                연구개발</strong>은, 청명기연환경이 항상 한 차원 높은 수준의 서비스를 제공하기 위해 끊임없이 노력하고 있다는 증거입니다.
+                            <strong>R&D 연구개발</strong>은, 청명기연환경이 항상 한 차원 높은 수준의 서비스를 제공하기 위해 끊임없이 노력하고 있다는 증거입니다.
                         </p>
                     </div>
                 </div>
@@ -1126,6 +1113,19 @@
                 });
                 infographicObserver.observe(infographic);
             }
+
+            // --- Slider Item Cloning for Seamless Loop ---
+            const sliders = document.querySelectorAll('.slider');
+            sliders.forEach(slider => {
+                const list = slider.querySelector('.list');
+                if (list) {
+                    const items = list.querySelectorAll('.item');
+                    items.forEach(item => {
+                        const clone = item.cloneNode(true);
+                        list.appendChild(clone);
+                    });
+                }
+            });
         });
 
         // --- 서비스 분야 카드 토글 로직 ---
